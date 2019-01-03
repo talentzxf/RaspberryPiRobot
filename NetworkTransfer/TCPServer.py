@@ -3,10 +3,11 @@ import threading
 
 
 class TCPServer:
-    def __init__(self):
+    def __init__(self, parser):
         self.bind_ip = '0.0.0.0'
         self.bind_port = 9999
         self.buf_map = {}
+        self.command_parser = parser
 
     def get_remain_buf(self, client_socket):
         if client_socket not in self.buf_map:
@@ -31,7 +32,8 @@ class TCPServer:
                     if command.lower() == "bye" or command.lower() == "quit":
                         is_connection_alive = False
                     else:
-                        self.handle_client_command(command)
+                        execute_result = self.handle_client_command(command)
+                        client_socket.send(execute_result)
                 line_break_idx = remain_buf.find("\n")
             self.buf_map[client_socket] = remain_buf
 
@@ -40,7 +42,8 @@ class TCPServer:
         print "Connection broken, client thread quit!"
 
     def handle_client_command(self, command_line):
-        print "Got command:%s" % command_line
+        result = self.command_parser.dispatch(command_line)
+        return "Got command:%s result:%s" % (command_line, result)
 
     def create_server(self):
         print "Creating socket"
@@ -58,7 +61,3 @@ class TCPServer:
                 args=(client_sock,)
             )
             client_handler.start()
-
-
-tcpServer = TCPServer()
-tcpServer.create_server()
