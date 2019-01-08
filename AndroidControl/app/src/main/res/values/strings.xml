@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RobotControl</string>
+    <string name="signature">VincentZhang\'s Robot Controller</string>
 </resources>
