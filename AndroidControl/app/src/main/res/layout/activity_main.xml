@@ -25,22 +25,50 @@
 
         <SeekBar
             android:id="@+id/leftWheelSpeed"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="400dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:rotation="270"
+            android:progress="@={controllerModel.leftSpeed}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <SeekBar
             android:id="@+id/rightWheelSpeed"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="400dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:rotation="270"
+            android:progress="@={controllerModel.rightSpeed}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/leftWheelSpeedText"
+            android:layout_width="250dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:ems="10"
+            android:labelFor="@id/leftWheelSpeed"
+            android:text="@{@string/leftwheelspeedformat(controllerModel.leftSpeed)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leftWheelSpeed" />
+
+        <TextView
+            android:id="@+id/rightWheelSpeedText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:ems="10"
+            android:labelFor="@id/rightWheelSpeed"
+            android:text="@{@string/rightwheelspeedformat(controllerModel.rightSpeed)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rightWheelSpeed" />
     </android.support.constraint.ConstraintLayout>
 </layout>
