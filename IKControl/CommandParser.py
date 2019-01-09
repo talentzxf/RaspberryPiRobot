@@ -1,4 +1,5 @@
 import traceback
+from HWController import HWController
 
 
 class CommandParser:
@@ -9,6 +10,7 @@ class CommandParser:
             'echo': self.echo,
             'setspeed': self.setspeed
         }
+        self.hw_controller = HWController()
 
     def dispatch(self, command):
         try:
@@ -23,6 +25,10 @@ class CommandParser:
             return "Exception happened:", traceback.format_exc()
 
     def setspeed(self, side, speed):
+        if side == "left":
+            self.hw_controller.set_left_speed(speed)
+        elif side == "right":
+            self.hw_controller.set_right_speed(speed)
         return "echo setspeed:" + side + "," + speed
 
     def echo(self, content):
