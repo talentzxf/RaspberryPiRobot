@@ -54,6 +54,7 @@ public class ControllerModel extends BaseObservable {
     public void setLeftSpeed(int leftSpeed) {
         this.leftSpeed = leftSpeed;
         notifyPropertyChanged(BR.leftSpeed);
+        controller.setLeftSpeed(this.leftSpeed);
     }
 
     @Bindable
@@ -64,5 +65,6 @@ public class ControllerModel extends BaseObservable {
     public void setRightSpeed(int rightSpeed) {
         this.rightSpeed = rightSpeed;
         notifyPropertyChanged(BR.rightSpeed);
+        controller.setRightSpeed(this.rightSpeed);
     }
 }

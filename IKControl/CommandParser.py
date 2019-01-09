@@ -5,7 +5,9 @@ class CommandParser:
     def __init__(self):
         self.command_mapping = {
             'clamp_point': self.clamp_point,
-            "reset": self.reset
+            "reset": self.reset,
+            'echo': self.echo,
+            'setspeed': self.setspeed
         }
 
     def dispatch(self, command):
@@ -20,12 +22,17 @@ class CommandParser:
         except:
             return "Exception happened:", traceback.format_exc()
 
+    def setspeed(self, side, speed):
+        return "echo setspeed:" + side + "," + speed
+
+    def echo(self, content):
+        return "echo " + content
 
     def clamp_point(self, point_x, point_y, point_z):
         float_point_x = float(point_x)
         float_point_y = float(point_y)
         float_point_z = float(point_z)
-        return "Point coords:%f,%f,%f" % (float_point_x, float_point_y, float_point_z)
+        return "echo Point coords:%f,%f,%f" % (float_point_x, float_point_y, float_point_z)
 
     def reset(self):
-        return "System reseted"
+        return "echo System reseted"

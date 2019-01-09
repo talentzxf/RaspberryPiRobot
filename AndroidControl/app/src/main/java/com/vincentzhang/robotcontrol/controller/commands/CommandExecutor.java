@@ -5,6 +5,5 @@ package com.vincentzhang.robotcontrol.controller.commands;
  */
 
 public interface CommandExecutor {
-    @CommandMeta()
     String execute(String ... params);
 }

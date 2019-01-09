@@ -9,11 +9,14 @@ import android.widget.SeekBar;
 import com.vincentzhang.robotcontrol.databinding.ActivityMainBinding;
 import com.vincentzhang.robotcontrol.model.ControllerModel;
 import com.vincentzhang.robotcontrol.model.SeekBarHandler;
+import com.vincentzhang.robotcontrol.utils.RefactorHelper;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RefactorHelper.setContext(this.getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 

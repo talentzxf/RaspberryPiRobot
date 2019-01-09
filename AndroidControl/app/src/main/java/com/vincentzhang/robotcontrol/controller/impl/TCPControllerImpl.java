@@ -10,6 +10,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -18,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TCPControllerImpl implements Controller, Runnable {
     private String tag = "TCPControllerImpl";
+    private static final int ARRAYCAPACITY = 1000;
 
     private String hostname;
     private int port;
@@ -29,6 +32,11 @@ public class TCPControllerImpl implements Controller, Runnable {
 
     private AtomicBoolean threadIsRunning = new AtomicBoolean(false);
 
+    private BlockingQueue<String> pendingCommands = new ArrayBlockingQueue<String>(ARRAYCAPACITY);
+
+    private Thread receiverThread;
+    private Thread senderThread;
+
     @Override
     public boolean isControllerRunning() {
         return threadIsRunning.get();
@@ -36,30 +44,28 @@ public class TCPControllerImpl implements Controller, Runnable {
 
     @Override
     public boolean connect(String hostname, int port) throws IOException {
-        clientSocket = new Socket(hostname, port);
-        outputStream = new DataOutputStream(clientSocket.getOutputStream());
-        inputReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        this.hostname = hostname;
+        this.port = port;
+        receiverThread = new Thread(this);
+        receiverThread.start();
         return true;
     }
 
     @Override
     public void setLeftSpeed(int speed) {
-        setSpeed("LEFT", speed);
+        setSpeed("left", speed);
     }
 
     @Override
     public void setRightSpeed(int speed) {
-        setSpeed("RIGHT", speed);
+        setSpeed("right", speed);
     }
 
     private void setSpeed(String side, int speed) {
         if (null != outputStream) {
             int realSpeed = speed - 100;
-            try {
-                outputStream.writeBytes(String.format("SET %sSPEED %d\n", side, realSpeed));
-            } catch (IOException e) {
-                Log.i(tag, "Write information failed!");
-            }
+
+            pendingCommands.offer(String.format("setspeed %s %d\n", side, realSpeed));
         }
     }
 
@@ -68,6 +74,29 @@ public class TCPControllerImpl implements Controller, Runnable {
         threadIsRunning.set(true);
 
         try {
+            clientSocket = new Socket(hostname, port);
+            outputStream = new DataOutputStream(clientSocket.getOutputStream());
+            inputReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            // Start sender
+            senderThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (threadIsRunning.get()) {
+                        try {
+                            String newCommand = pendingCommands.take();
+                            outputStream.writeBytes(newCommand);
+                        } catch (InterruptedException e) {
+                            Log.e(tag, "Interrupted while trying to fetch pending command", e);
+                        } catch (IOException e) {
+                            Log.e(tag, "Error happened while trying to write command", e);
+                        }
+                    }
+                }
+            });
+
+            senderThread.start();
+
             while (threadIsRunning.get()) {
                 String command = inputReader.readLine();
                 if (command.equalsIgnoreCase("exit") ||

@@ -2,15 +2,15 @@ package com.vincentzhang.robotcontrol.controller.commands;
 
 import android.util.Log;
 
-import org.reflections.Reflections;
+import com.vincentzhang.robotcontrol.utils.RefactorHelper;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by VincentZhang on 1/9/2019.
@@ -49,15 +49,20 @@ public class CommandDispatcher {
 
     public CommandDispatcher() {
         // Scan all commands in controller/commands/impl folder
-        Reflections reflections = new Reflections("com.vincentzhang.robotcontrol.controller.commands.impl");
-        Set<Method> executionMethods = reflections.getMethodsAnnotatedWith(CommandMeta.class);
-        for (Method method : executionMethods) {
-            CommandMeta executionMeta = method.getAnnotation(CommandMeta.class);
-            if (!"undef".equals(executionMeta.tag()) &&
-                    !"undef".equals(executionMeta.pattern())) {
-                registerMethod(executionMeta.tag(), executionMeta.pattern(), method);
+        List<Method> methods = null;
+        try {
+            methods = RefactorHelper.getAllMethodsWithAnnotation("com.vincentzhang.robotcontrol.controller.commands.impl"
+                    , CommandMeta.class);
+            for (Method method : methods) {
+                CommandMeta meta = method.getDeclaredAnnotation(CommandMeta.class);
+                registerMethod(meta.tag(), meta.pattern(), method);
             }
+        } catch (IOException e) {
+            Log.e(tag, "Can't get methods", e);
+        } catch (ClassNotFoundException e) {
+            Log.e(tag, "Can't get methods", e);
         }
+
     }
 
     public String executeCommand(String commandLine) {
@@ -65,12 +70,13 @@ public class CommandDispatcher {
         String[] commandParams = commandLine.split(" ");
 
         List<Method> methodCandidates = tag2CommandMapping.get(commandParams[0]);
-        if (null != methodCandidates || !methodCandidates.isEmpty()) {
+        if (null != methodCandidates && !methodCandidates.isEmpty()) {
             if (methodCandidates.size() == 1) { // Only 1 candidate, just run it.
                 Method targetMethod = methodCandidates.get(0);
-                System.arraycopy(commandParams, 1, commandParams, 0, commandParams.length - 1);
+                String[] commandParamsOnly = new String[commandParams.length - 1];
+                System.arraycopy(commandParams, 1, commandParamsOnly, 0, commandParams.length - 1);
                 try {
-                    targetMethod.invoke(getObjectForClass(targetMethod.getDeclaringClass()), commandParams, commandParams);
+                    targetMethod.invoke(getObjectForClass(targetMethod.getDeclaringClass()), new Object[]{commandParamsOnly});
                 } catch (IllegalAccessException e) {
                     Log.e(tag, "Error while try to exeucte command!", e);
                 } catch (InvocationTargetException e) {

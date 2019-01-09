@@ -43,7 +43,8 @@ class TCPServer:
 
     def handle_client_command(self, command_line):
         result = self.command_parser.dispatch(command_line)
-        return "Got command:%s result:%s" % (command_line, result)
+        print "Got command:%s result:%s" % (command_line, result)
+        return result + "\n"
 
     def create_server(self):
         print "Creating socket"
