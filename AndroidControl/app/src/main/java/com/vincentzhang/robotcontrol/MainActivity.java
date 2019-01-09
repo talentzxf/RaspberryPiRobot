@@ -2,8 +2,8 @@ package com.vincentzhang.robotcontrol;
 
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
 
 import com.vincentzhang.robotcontrol.databinding.ActivityMainBinding;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         // setContentView(R.layout.activity_main);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setControllerModel(new ControllerModel(this.getApplicationContext().getResources()));
+        binding.setControllerModel(new ControllerModel());
 
         setupCallbacks();
     }
@@ -31,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
         SeekBar rightSeekBar = findViewById(R.id.rightWheelSpeed);
 
         leftSeekBar.setOnTouchListener(seekBarHandler);
-        leftSeekBar.setOnSeekBarChangeListener(seekBarHandler);
-
         rightSeekBar.setOnTouchListener(seekBarHandler);
-        rightSeekBar.setOnSeekBarChangeListener(seekBarHandler);
     }
 }

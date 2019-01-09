@@ -29,6 +29,12 @@ public class TCPControllerImpl implements Controller, Runnable {
 
     private AtomicBoolean threadIsRunning = new AtomicBoolean(false);
 
+    @Override
+    public boolean isControllerRunning() {
+        return threadIsRunning.get();
+    }
+
+    @Override
     public boolean connect(String hostname, int port) throws IOException {
         clientSocket = new Socket(hostname, port);
         outputStream = new DataOutputStream(clientSocket.getOutputStream());
@@ -76,13 +82,15 @@ public class TCPControllerImpl implements Controller, Runnable {
             Log.e(tag, "Exception happened when trying to read from connection", e);
         } finally {
             try {
+                threadIsRunning.set(false);
+
                 outputStream.close();
                 inputReader.close();
                 clientSocket.close();
 
                 outputStream = null;
                 inputReader = null;
-                clientSocket.close();
+                clientSocket = null;
 
             } catch (IOException e) {
                 Log.e(tag, "Exception happened when trying to close stream", e);
