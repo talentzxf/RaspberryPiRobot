@@ -4,6 +4,8 @@ import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.SeekBar;
 
 import com.vincentzhang.robotcontrol.databinding.ActivityMainBinding;
@@ -18,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
         RefactorHelper.setContext(this.getApplicationContext());
 
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // setContentView(R.layout.activity_main);

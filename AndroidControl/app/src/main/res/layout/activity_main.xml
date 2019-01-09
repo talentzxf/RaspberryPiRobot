@@ -40,7 +40,7 @@
             android:min="0"
             android:progress="@={controllerModel.leftSpeed}"
             android:rotation="270"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <SeekBar
@@ -53,19 +53,19 @@
             android:min="0"
             android:progress="@={controllerModel.rightSpeed}"
             android:rotation="270"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/leftWheelSpeedText"
-            android:layout_width="250dp"
-            android:layout_height="22dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="248dp"
+            android:layout_height="19dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center"
             android:labelFor="@id/leftWheelSpeed"
             android:text="@{@string/leftwheelspeedformat(controllerModel.leftSpeed - 100)}"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/leftWheelSpeed" />
 
         <TextView
@@ -77,7 +77,7 @@
             android:gravity="center"
             android:labelFor="@id/rightWheelSpeed"
             android:text="@{@string/rightwheelspeedformat(controllerModel.rightSpeed - 100)}"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rightWheelSpeed" />
     </android.support.constraint.ConstraintLayout>
 </layout>

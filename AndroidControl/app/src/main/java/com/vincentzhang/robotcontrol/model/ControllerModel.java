@@ -36,7 +36,8 @@ public class ControllerModel extends BaseObservable {
     public ControllerModel(Resources resources) {
         msg = resources.getString(R.string.signature);
         try {
-            controller.connect("10.86.48.161", 9999);
+            // controller.connect("10.86.48.161", 9999);
+            controller.connect("10.0.0.18", 9999);
         } catch (IOException e) {
             Log.e(tag, "Can't connect to remote server", e);
         }
