@@ -21,12 +21,19 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setControllerModel(new ControllerModel(this.getApplicationContext().getResources()));
 
+        setupCallbacks();
+    }
+
+    private void setupCallbacks() {
         SeekBarHandler seekBarHandler = new SeekBarHandler();
         // Let seek bar always return to 0 when released
         SeekBar leftSeekBar = findViewById(R.id.leftWheelSpeed);
         SeekBar rightSeekBar = findViewById(R.id.rightWheelSpeed);
 
         leftSeekBar.setOnTouchListener(seekBarHandler);
+        leftSeekBar.setOnSeekBarChangeListener(seekBarHandler);
+
         rightSeekBar.setOnTouchListener(seekBarHandler);
+        rightSeekBar.setOnSeekBarChangeListener(seekBarHandler);
     }
 }

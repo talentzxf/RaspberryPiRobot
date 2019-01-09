@@ -1,6 +1,5 @@
 package com.vincentzhang.robotcontrol.model;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
@@ -12,7 +11,7 @@ import android.widget.SeekBar;
 public class SeekBarHandler implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         SeekBar thisBar = (SeekBar) v;
-        if(event.getAction() == MotionEvent.ACTION_UP){
+        if (event.getAction() == MotionEvent.ACTION_UP) {
             thisBar.setProgress(ControllerModel.INITSPEED);
             return true;
         }
