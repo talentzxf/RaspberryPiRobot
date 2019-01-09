@@ -33,7 +33,7 @@ public class ControllerModel extends BaseObservable {
         return controller.isControllerRunning();
     }
 
-    public ControllerModel() {
+    public ControllerModel(Resources resources) {
         msg = resources.getString(R.string.signature);
         try {
             controller.connect("10.86.48.161", 9999);
