@@ -1,75 +1,87 @@
+from threading import Thread
+
 import RPi.GPIO as GPIO
 import time
 import sys
 
-SensorRight = 16
-SensorLeft = 12
 
-PWMA = 18
-AIN1 = 22
-AIN2 = 27
+class SuperSonic:
+    def __init__(self):
+        self.SensorRight = 16
+        self.SensorLeft = 12
 
-PWMB = 23
-BIN1 = 25
-BIN2 = 24
+        self.PWMA = 18
+        self.AIN1 = 22
+        self.AIN2 = 27
 
-BtnPin = 19
-Gpin = 5
-Rpin = 6
+        self.PWMB = 23
+        self.BIN1 = 25
+        self.BIN2 = 24
 
-TRIG = 20
-ECHO = 21
+        self.BtnPin = 19
+        self.Gpin = 5
+        self.Rpin = 6
 
-def setup():
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(TRIG, GPIO.OUT)
-    GPIO.setup(ECHO, GPIO.IN)
+        self.TRIG = 20
+        self.ECHO = 21
 
-    GPIO.setup(Gpin, GPIO.OUT)
-    GPIO.setup(Rpin, GPIO.OUT)
-    GPIO.setup(BtnPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        self.is_thread_running = False
 
-    GPIO.setup(AIN2, GPIO.OUT)
-    GPIO.setup(AIN1, GPIO.OUT)
-    GPIO.setup(PWMA, GPIO.OUT)
+    def setup(self):
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.TRIG, GPIO.OUT)
+        GPIO.setup(self.ECHO, GPIO.IN)
 
-    GPIO.setup(BIN1, GPIO.OUT)
-    GPIO.setup(BIN2, GPIO.OUT)
-    GPIO.setup(PWMB, GPIO.OUT)
+        GPIO.setup(self.Gpin, GPIO.OUT)
+        GPIO.setup(self.Rpin, GPIO.OUT)
+        GPIO.setup(self.BtnPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+        GPIO.setup(self.AIN2, GPIO.OUT)
+        GPIO.setup(self.AIN1, GPIO.OUT)
+        GPIO.setup(self.PWMA, GPIO.OUT)
 
-def distance():
-    GPIO.output(TRIG, 0)
-    time.sleep(0.000002)
+        GPIO.setup(self.BIN1, GPIO.OUT)
+        GPIO.setup(self.BIN2, GPIO.OUT)
+        GPIO.setup(self.PWMB, GPIO.OUT)
 
-    GPIO.output(TRIG, 1)
-    time.sleep(0.000001)
+    def distance(self):
+        GPIO.output(self.TRIG, 0)
+        time.sleep(0.000002)
 
-    GPIO.output(TRIG, 0)
+        GPIO.output(self.TRIG, 1)
+        time.sleep(0.000001)
 
-    while GPIO.input(ECHO) == 0:
-        a = 0
-    time1 = time.time()
-    while GPIO.input(ECHO) == 1:
-        a = 1
+        GPIO.output(self.TRIG, 0)
 
-    time2 = time.time()
-    during = time2 - time1
-    return during * 340/2*100
+        while GPIO.input(self.ECHO) == 0:
+            a = 0
+        time1 = time.time()
+        while GPIO.input(self.ECHO) == 1:
+            a = 1
 
-def loop():
-    while True:
-        dis = distance()
-        print dis,'cm'
-        print ''
+        time2 = time.time()
+        during = time2 - time1
+        return during * 340 / 2 * 100
 
-def destroy():
-    GPIO.cleanup()
+    def thread_func(self):
+        self.is_thread_running = True
 
+        self.setup()
+        while self.is_thread_running:
+            self.callback(self.distance())
 
-if __name__ == '__main__':
-    setup()
-    print "Begin loop"
-    loop()
-    print "End loop"
+        self.is_thread_running = True
+
+    def start_thread(self, callback):
+        if not self.is_thread_running:
+            self.callback = callback
+            self.thread = Thread(target=self.thread_func)
+            self.thread.start()
+        else:
+            print "Super sonic is running, can't start again!"
+
+    def stop_thread(self):
+        self.is_thread_running = False
+        self.thread.join()
+        print "Super sonic stopped"
