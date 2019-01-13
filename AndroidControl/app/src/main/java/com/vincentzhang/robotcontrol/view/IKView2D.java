@@ -1,4 +1,4 @@
-package com.vincentzhang.robotcontrol;
+package com.vincentzhang.robotcontrol.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
