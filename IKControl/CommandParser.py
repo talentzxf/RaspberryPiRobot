@@ -1,4 +1,6 @@
 import traceback
+from HWController import HWController
+from IKControl.SuperSonic import SuperSonic
 
 
 class CommandParser:
@@ -7,8 +9,20 @@ class CommandParser:
             'clamp_point': self.clamp_point,
             "reset": self.reset,
             'echo': self.echo,
-            'setspeed': self.setspeed
+            'setspeed': self.setspeed,
+            'supersonic': self.supersonic
         }
+        self.hw_controller = HWController()
+
+    def supersonic_callback(self):
+        pass
+
+    def supersonic(self, is_start):
+        if is_start == 'start':
+            self.hw_controller.start_supersonic(self.supersonic_callback)
+        elif is_start == "stop":
+            self.hw_controller.stop_supersonic()
+        pass
 
     def dispatch(self, command):
         try:
@@ -23,6 +37,10 @@ class CommandParser:
             return "Exception happened:", traceback.format_exc()
 
     def setspeed(self, side, speed):
+        if side == "left":
+            self.hw_controller.set_left_speed(speed)
+        elif side == "right":
+            self.hw_controller.set_right_speed(speed)
         return "echo setspeed:" + side + "," + speed
 
     def echo(self, content):

@@ -49,6 +49,7 @@ class TCPServer:
     def create_server(self):
         print "Creating socket"
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1) 
         print "Binding to %s:%d" % (self.bind_ip, self.bind_port)
         self.server.bind((self.bind_ip, self.bind_port))
         print "Listening"
