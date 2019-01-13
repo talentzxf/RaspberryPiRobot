@@ -113,9 +113,13 @@ public class TCPControllerImpl implements Controller, Runnable {
             try {
                 threadIsRunning.set(false);
 
-                outputStream.close();
-                inputReader.close();
-                clientSocket.close();
+                if(outputStream != null)
+                    outputStream.close();
+                if(inputReader != null)
+                    inputReader.close();
+
+                if(clientSocket != null)
+                    clientSocket.close();
 
                 outputStream = null;
                 inputReader = null;
