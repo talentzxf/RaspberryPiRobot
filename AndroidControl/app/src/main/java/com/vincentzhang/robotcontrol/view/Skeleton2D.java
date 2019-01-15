@@ -17,6 +17,7 @@ import java.util.List;
 
 public class Skeleton2D {
     private List<Bone> boneList = new ArrayList();
+    private Point2D lastPoint = null;
 
     public Skeleton2D(double l1, double l2) {
         Bone bone1 = new Bone(new Point2D(0, 0), new Vector2D(1, 1), l1);
@@ -25,23 +26,39 @@ public class Skeleton2D {
         boneList.add(bone2);
     }
 
+    public void setTheta1(double degTheta1){
+        Bone bone1 = boneList.get(0);
+        bone1.setDegTheta(degTheta1);
+
+        .setEndPoint();
+    }
+
+    public void setTheta2(double degTheta2){
+
+    }
+
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
-        paint.setStrokeWidth((float) 1.0);
+        paint.setStrokeWidth((float) 5.0);
 
         int scrWidth = canvas.getWidth();
         int scrHeight = canvas.getHeight();
 
-
-
         for(Bone bone: boneList){
-            canvas.drawLine((float)MathHelper.getScreenX(scrWidth, bone.getStartPoint().getX()),
-                    (float)MathHelper.getScreenX(scrHeight, bone.getStartPoint().getY()),
-                    (float)MathHelper.getScreenX(scrWidth, bone.getEndPoint().getX()),
-                    (float)MathHelper.getScreenX(scrHeight, bone.getEndPoint().getY()), paint);
-            paint.setStrokeWidth(5.0f);
+            float scrPoint1X = (float)MathHelper.getScreenX(scrWidth, bone.getStartPoint().getX());
+            float scrPoint1Y = (float)MathHelper.getScreenY(scrHeight, bone.getStartPoint().getY());
+            float scrPoint2X = (float)MathHelper.getScreenX(scrWidth, bone.getEndPoint().getX());
+            float scrPoint2Y = (float)MathHelper.getScreenY(scrHeight, bone.getEndPoint().getY());
+            canvas.drawLine(scrPoint1X,scrPoint1Y, scrPoint2X,scrPoint2Y, paint);
+            lastPoint = bone.getEndPoint();
+        }
+
+        if(lastPoint != null){
+            float scrLastPointX = (float)MathHelper.getScreenX(scrWidth, lastPoint.getX());
+            float scrLastPointY = (float)MathHelper.getScreenY(scrHeight, lastPoint.getY());
+            canvas.drawCircle(scrLastPointX, scrLastPointY, 20, paint);
         }
     }
 }

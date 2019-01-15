@@ -2,6 +2,7 @@ package com.vincentzhang.robotcontrol;
 
 import com.vincentzhang.robotcontrol.utils.MathHelper;
 import com.vincentzhang.robotcontrol.utils.Point2D;
+import com.vincentzhang.robotcontrol.utils.Vector2D;
 
 import org.junit.Test;
 

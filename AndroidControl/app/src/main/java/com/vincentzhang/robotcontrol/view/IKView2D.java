@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class IKView2D extends android.support.v7.widget.AppCompatImageView {
-    final static double length1 = 10.0;
-    final static double length2 = 10.0;
+    final static double length1 = 280.0;
+    final static double length2 = 280.0;
 
     private Skeleton2D skeleton2D = new Skeleton2D(length1, length2);
 

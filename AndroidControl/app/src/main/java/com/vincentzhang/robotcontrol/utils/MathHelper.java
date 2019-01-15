@@ -93,10 +93,10 @@ public class MathHelper {
     }
 
     public static double getScreenX(double screenWidth, double worldX){
-        return worldX + screenWidth/2;
+        return worldX + screenWidth/6;
     }
 
     public static double getScreenY(double screenHeight, double worldY){
-        return screenHeight/2 - worldY;
+        return screenHeight*5/6 - worldY;
     }
 }
