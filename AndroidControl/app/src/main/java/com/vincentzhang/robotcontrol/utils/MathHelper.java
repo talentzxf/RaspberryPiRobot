@@ -40,6 +40,10 @@ public class MathHelper {
             super(x, y);
         }
 
+        public Vector2D(Point2D point) {
+            super(point.x, point.y);
+        }
+
         public Vector2D add(Vector2D p) {
             return new Vector2D(p.x + this.x, p.y + this.y);
         }
@@ -59,6 +63,17 @@ public class MathHelper {
         public Vector2D normalize() {
             double vLength = length();
             return new Vector2D(this.x / vLength, this.y / vLength);
+        }
+
+        public double dotProduct(Vector2D p) {
+            return this.x * p.x + this.y * p.y;
+        }
+
+        public double degAngle(Vector2D v) {
+            double dot = dotProduct(v);
+            double radCos = dot / (length() * v.length());
+
+            return Math.toDegrees(Math.acos(radCos));
         }
     }
 

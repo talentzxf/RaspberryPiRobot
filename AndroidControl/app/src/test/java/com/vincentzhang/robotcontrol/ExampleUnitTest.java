@@ -81,6 +81,7 @@ public class ExampleUnitTest {
         assertEquals(points.size(), 2);
         assertTrue(MathHelper.pointOnCircle(center1, 2, points.get(0)));
         assertTrue(MathHelper.pointOnCircle(center2, 2, points.get(0)));
+        assertTrue(MathHelper.pointOnCircle(center2, 2, points.get(0)));
         assertTrue(MathHelper.pointOnCircle(center1, 2, points.get(1)));
         assertTrue(MathHelper.pointOnCircle(center2, 2, points.get(1)));
     }
