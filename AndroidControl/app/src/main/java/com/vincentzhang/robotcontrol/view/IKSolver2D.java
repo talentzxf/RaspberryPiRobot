@@ -1,6 +1,8 @@
 package com.vincentzhang.robotcontrol.view;
 
 import com.vincentzhang.robotcontrol.utils.MathHelper;
+import com.vincentzhang.robotcontrol.utils.Point2D;
+import com.vincentzhang.robotcontrol.utils.Vector2D;
 
 import java.util.List;
 
@@ -36,17 +38,17 @@ public class IKSolver2D {
         return degServoTheta2 - 180 + getDegTheta1() + degAngleDiff;
     }
 
-    boolean solveIK(MathHelper.Point2D target, double l1, double l2){
-        MathHelper.Point2D c1 = new MathHelper.Point2D(0,0);
-        List<MathHelper.Point2D> intersectPoints = MathHelper.circleInterect(c1,l1, target, l2);
+    boolean solveIK(Point2D target, double l1, double l2){
+        Point2D c1 = new Point2D(0,0);
+        List<Point2D> intersectPoints = MathHelper.circleInterect(c1,l1, target, l2);
         if(intersectPoints.isEmpty()){
             return false;
         }
 
         // TODO: Make the motion more smooth.
-        MathHelper.Point2D point = intersectPoints.get(0);
-        MathHelper.Vector2D v1 = new MathHelper.Vector2D(point);
-        MathHelper.Vector2D v2 = v1.minus(new MathHelper.Vector2D(target));
+        Point2D point = intersectPoints.get(0);
+        Vector2D v1 = new Vector2D(point);
+        Vector2D v2 = v1.minus(new Vector2D(target));
 
         double degTheta2 = v1.degAngle(v2);
         double degTheta1 = 180 - Math.toDegrees(Math.atan2(point.getY(), point.getX()));

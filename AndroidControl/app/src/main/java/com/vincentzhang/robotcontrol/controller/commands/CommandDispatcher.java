@@ -2,7 +2,7 @@ package com.vincentzhang.robotcontrol.controller.commands;
 
 import android.util.Log;
 
-import com.vincentzhang.robotcontrol.utils.RefactorHelper;
+import com.vincentzhang.robotcontrol.utils.ReflectionHelper;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -51,7 +51,7 @@ public class CommandDispatcher {
         // Scan all commands in controller/commands/impl folder
         List<Method> methods = null;
         try {
-            methods = RefactorHelper.getAllMethodsWithAnnotation("com.vincentzhang.robotcontrol.controller.commands.impl"
+            methods = ReflectionHelper.getAllMethodsWithAnnotation("com.vincentzhang.robotcontrol.controller.commands.impl"
                     , CommandMeta.class);
             for (Method method : methods) {
                 CommandMeta meta = method.getDeclaredAnnotation(CommandMeta.class);

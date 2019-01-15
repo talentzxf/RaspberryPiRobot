@@ -11,13 +11,13 @@ import android.widget.SeekBar;
 import com.vincentzhang.robotcontrol.databinding.ActivityMainBinding;
 import com.vincentzhang.robotcontrol.model.ControllerModel;
 import com.vincentzhang.robotcontrol.model.SeekBarHandler;
-import com.vincentzhang.robotcontrol.utils.RefactorHelper;
+import com.vincentzhang.robotcontrol.utils.ReflectionHelper;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        RefactorHelper.setContext(this.getApplicationContext());
+        ReflectionHelper.setContext(this.getApplicationContext());
 
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);

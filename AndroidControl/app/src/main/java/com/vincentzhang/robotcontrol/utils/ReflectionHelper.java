@@ -18,7 +18,7 @@ import dalvik.system.PathClassLoader;
  * Created by VincentZhang on 1/9/2019.
  */
 
-public class RefactorHelper {
+public class ReflectionHelper {
     private static Context applicationContext;
 
     public static List<Method> getAllMethodsWithAnnotation(String packageName, final Class<? extends Annotation> annotation) throws IOException, ClassNotFoundException {
@@ -106,6 +106,6 @@ public class RefactorHelper {
     }
 
     public static void setContext(Context applicationContext) {
-        RefactorHelper.applicationContext = applicationContext;
+        ReflectionHelper.applicationContext = applicationContext;
     }
 }

@@ -1,61 +1,38 @@
 package com.vincentzhang.robotcontrol.view;
 
-import com.vincentzhang.robotcontrol.utils.MathHelper;
+import com.vincentzhang.robotcontrol.utils.Point2D;
+import com.vincentzhang.robotcontrol.utils.Vector2D;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by VincentZhang on 1/15/2019.
  */
-enum PointType {
-    START,
-    END
-}
 
 public class Skeleton2D {
     public static class Bone {
-        private double length; // Once set, this should not change
-        private Map<PointType, MathHelper.Point2D> endPointMapping = new HashMap();
-        private Map<PointType, Boolean> pointIsFixed = new HashMap<>();
+        private Point2D startPoint;
+        private Point2D endPoint;
 
-        public void setEndPoint(PointType tag, MathHelper.Point2D point) {
-            endPointMapping.put(tag, point);
-            pointIsFixed.put(tag, false); // By default, all points are flexible
-
-            if (endPointMapping.get(PointType.START) != null &&
-                    endPointMapping.get(PointType.END) != null) {
-                MathHelper.Point2D start = endPointMapping.get(PointType.START);
-                MathHelper.Point2D end = endPointMapping.get(PointType.END);
-                length = end.distance(start);
-            }
+        public Bone(Point2D startPoint, Vector2D direction, double length) {
+            endPoint = new Vector2D(startPoint).add(direction.normalize()).multiply(length);
         }
 
-        public void pinPoint(PointType tag) {
-            pointIsFixed.put(tag, true);
-        }
-
-        public MathHelper.Point2D getEndPoint(PointType tag) {
-            return endPointMapping.get(tag);
-        }
-
-        // Once connected, my points will be flexible.
-        public void connect(Bone bone2, PointType tag, PointType myTag) {
-            endPointMapping.put(myTag, bone2.getEndPoint(tag));
-
-            for (PointType type : pointIsFixed.keySet()) {
-                pointIsFixed.put(type, false);
-            }
+        public Point2D getEndPoint(){
+            return endPoint;
         }
     }
 
-    Bone bone1 = new Bone();
-    Bone bone2 = new Bone();
+    private List<Bone> boneList = new ArrayList();
 
     public Skeleton2D() {
-        bone1.setEndPoint(PointType.START, new MathHelper.Point2D(0, 0));
-        bone1.setEndPoint(PointType.START, new MathHelper.Point2D(0, 0));
-
+        Bone bone1 = new Bone(new Point2D(0,0), new Vector2D(1,1), 10);
+        boneList.add(bone1);
+        Bone bone2 = new Bone(bone1.getEndPoint(), new Vector2D(1,-1), 10);
+        boneList.add(bone2);
     }
 
 }

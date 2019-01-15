@@ -1,6 +1,7 @@
 package com.vincentzhang.robotcontrol;
 
 import com.vincentzhang.robotcontrol.utils.MathHelper;
+import com.vincentzhang.robotcontrol.utils.Point2D;
 
 import org.junit.Test;
 
@@ -56,17 +57,17 @@ public class ExampleUnitTest {
 
     @Test
     public void testCircleInterect() {
-        MathHelper.Point2D center1 = new MathHelper.Point2D(1, 1);
-        MathHelper.Point2D center2 = new MathHelper.Point2D(3, 1);
-        List<MathHelper.Point2D> points = MathHelper.circleInterect(center1, 1,
+        Point2D center1 = new Point2D(1, 1);
+        Point2D center2 = new Point2D(3, 1);
+        List<Point2D> points = MathHelper.circleInterect(center1, 1,
                 center2, 1);
         assertEquals(points.size(), 1);
         assertTrue(Math.abs(points.get(0).getX() - 2.0) < MathHelper.EPS);
         assertTrue(Math.abs(points.get(0).getY() - 1.0) < MathHelper.EPS);
 
 
-        center1 = new MathHelper.Point2D(1, 1);
-        center2 = new MathHelper.Point2D(Math.sqrt(2), Math.sqrt(2));
+        center1 = new Point2D(1, 1);
+        center2 = new Point2D(Math.sqrt(2), Math.sqrt(2));
         points = MathHelper.circleInterect(center1, 1, center2, 1);
         assertEquals(points.size(), 2);
         assertTrue(MathHelper.pointOnCircle(center1, 1, points.get(0)));
@@ -75,8 +76,8 @@ public class ExampleUnitTest {
         assertTrue(MathHelper.pointOnCircle(center2, 1, points.get(1)));
 
 
-        center1 = new MathHelper.Point2D(1, 1);
-        center2 = new MathHelper.Point2D(0.2, 0.2);
+        center1 = new Point2D(1, 1);
+        center2 = new Point2D(0.2, 0.2);
         points = MathHelper.circleInterect(center1, 2, center2, 2);
         assertEquals(points.size(), 2);
         assertTrue(MathHelper.pointOnCircle(center1, 2, points.get(0)));
