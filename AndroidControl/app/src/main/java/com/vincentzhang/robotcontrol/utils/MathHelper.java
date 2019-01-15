@@ -91,4 +91,12 @@ public class MathHelper {
         double distance = circleCenter.distance(targetPoint);
         return Math.abs(distance - r) < EPS;
     }
+
+    public static double getScreenX(double screenWidth, double worldX){
+        return worldX + screenWidth/2;
+    }
+
+    public static double getScreenY(double screenHeight, double worldY){
+        return screenHeight/2 - worldY;
+    }
 }
