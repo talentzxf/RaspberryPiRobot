@@ -59,4 +59,13 @@ public class Vector2D extends Point2D {
     public Vector2D rotateCW(double degDegree) {
         return this.rotateCCW(-degDegree);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Vector2D == false){
+            return false;
+        }
+        Vector2D target = (Vector2D) obj;
+        return this.manhattanDistance(target) <= MathHelper.EPS;
+    }
 }

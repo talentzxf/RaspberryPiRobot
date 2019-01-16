@@ -23,4 +23,8 @@ public class Point2D {
     public double distance(Point2D p) {
         return Math.sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y));
     }
+
+    public double manhattanDistance(Point2D p){
+        return Math.abs(x-p.x) + Math.abs(y-p.y);
+    }
 }

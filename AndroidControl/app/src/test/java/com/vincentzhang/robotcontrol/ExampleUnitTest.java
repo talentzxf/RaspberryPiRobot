@@ -24,6 +24,13 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void testVector2D(){
+        Vector2D vec = new Vector2D(1,0);
+        vec.rotateCCW(90);
+        assertTrue();
+    }
+
+    @Test
     public void testQuadraticEquationSolver() {
         MathHelper.QuadraticEquationSolver qes = new MathHelper.QuadraticEquationSolver(1, 4, 4);
         List<Double> solutions = qes.solve();
