@@ -20,11 +20,29 @@ public class Bone {
         return startPoint;
     }
 
-    public void setDegTheta(double degTheta) {
-        double length = startPoint.distance(endPoint);
-        double rad = Math.toRadians(degTheta);
+    public double getBoneLength(){
+        return startPoint.distance(endPoint);
+    }
 
-        endPoint = new Point2D(startPoint.getX() * Math.cos(rad) * length,
-                startPoint.getY() * Math.sin(rad)*length);
+    public Vector2D getBoneDir(){
+        return new Vector2D(endPoint).minus(new Vector2D(startPoint)).normalize();
+    }
+
+    public void setBoneDir(Vector2D newDir){
+        double boneLength = getBoneLength();
+
+        endPoint = (new Vector2D(startPoint)).add(newDir.normalize().multiply(boneLength));
+    }
+
+    /**
+     * Drag the start point of the bone to the targetPoint. Keep length and dir
+     * @param targetPoint
+     */
+    public void dragBone(Point2D targetPoint) {
+        double boneLength = getBoneLength();
+        Vector2D boneDir = getBoneDir();
+
+        this.startPoint = targetPoint;
+        this.endPoint = new Vector2D(this.startPoint).add(boneDir.multiply(boneLength));
     }
 }

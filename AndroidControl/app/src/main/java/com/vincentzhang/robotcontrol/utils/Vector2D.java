@@ -44,4 +44,19 @@ public class Vector2D extends Point2D {
     public Vector2D multiply(double length) {
         return new Vector2D(x*length, y*length);
     }
+
+    public Vector2D rotateCCW(double degDegree){
+        double rad = Math.toRadians(degDegree);
+        double sine = Math.sin(rad);
+        double cosine = Math.cos(rad);
+
+        double x_after = x * cosine - y * sine;
+        double y_after = y * cosine + x * sine;
+
+        return new Vector2D(x_after, y_after);
+    }
+
+    public Vector2D rotateCW(double degDegree) {
+        return this.rotateCCW(-degDegree);
+    }
 }
