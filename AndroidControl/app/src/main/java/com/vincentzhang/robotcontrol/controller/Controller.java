@@ -12,4 +12,6 @@ public interface Controller {
     boolean connect(String hostname, int port) throws IOException;
 
     boolean isControllerRunning();
+
+    void setServoDegree(int idx, double degServoTheta);
 }

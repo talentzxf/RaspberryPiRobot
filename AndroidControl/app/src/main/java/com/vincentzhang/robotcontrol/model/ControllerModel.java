@@ -78,6 +78,8 @@ public class ControllerModel extends BaseObservable implements SkeletonChangeLis
             IKSolver2D solver2D = (IKSolver2D) arg;
 
             Log.i("ControllerModel", "Skeleton change! New Servo1 Degree:" + solver2D.getDegServoTheta1() + " theta2:" + solver2D.getDegServoTheta2());
+            controller.setServoDegree(1, solver2D.getDegServoTheta1());
+            controller.setServoDegree(2, solver2D.getDegServoTheta2());
         }
     }
 }

@@ -10,7 +10,8 @@ class CommandParser:
             "reset": self.reset,
             'echo': self.echo,
             'setspeed': self.setspeed,
-            'supersonic': self.supersonic
+            'supersonic': self.supersonic,
+            'setservodegree' : self.setservodegree
         }
         self.hw_controller = HWController()
 
@@ -42,6 +43,10 @@ class CommandParser:
         elif side == "right":
             self.hw_controller.set_right_speed(speed)
         return "echo setspeed:" + side + "," + speed
+
+    def setservodegree(self, id, degree):
+        self.hw_controller.set_servo_degree(id, degree)
+        return "Servo:" + id + " set to degree:" + degree
 
     def echo(self, content):
         return "echo " + content

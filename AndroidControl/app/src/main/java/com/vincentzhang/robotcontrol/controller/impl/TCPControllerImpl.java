@@ -70,6 +70,11 @@ public class TCPControllerImpl implements Controller, Runnable {
     }
 
     @Override
+    public void setServoDegree(int idx, double degServoTheta) {
+        pendingCommands.offer(String.format("setservodegree %d %f\n", idx, degServoTheta ));
+    }
+
+    @Override
     public void run() {
         threadIsRunning.set(true);
 
