@@ -36,6 +36,9 @@ public class TCPControllerImpl implements Controller, Runnable {
 
     private Thread receiverThread;
     private Thread senderThread;
+    private Thread uiThread;
+
+    private volatile AtomicBoolean isServerOnline = new AtomicBoolean(false);
 
     @Override
     public boolean isControllerRunning() {
@@ -44,6 +47,7 @@ public class TCPControllerImpl implements Controller, Runnable {
 
     @Override
     public boolean connect(String hostname, int port) throws IOException {
+        this.uiThread = Thread.currentThread();
         this.hostname = hostname;
         this.port = port;
         receiverThread = new Thread(this);
@@ -71,7 +75,11 @@ public class TCPControllerImpl implements Controller, Runnable {
 
     @Override
     public void setServoDegree(int idx, double degServoTheta) {
-        pendingCommands.offer(String.format("setservodegree %d %f\n", idx, degServoTheta ));
+        pendingCommands.offer(String.format("setservodegree %d %f\n", idx, degServoTheta));
+    }
+
+    public AtomicBoolean getIsServerOnline() {
+        return isServerOnline;
     }
 
     @Override
@@ -83,6 +91,7 @@ public class TCPControllerImpl implements Controller, Runnable {
             outputStream = new DataOutputStream(clientSocket.getOutputStream());
             inputReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+            isServerOnline.set(true);
             // Start sender
             senderThread = new Thread(new Runnable() {
                 @Override
@@ -93,8 +102,10 @@ public class TCPControllerImpl implements Controller, Runnable {
                             outputStream.writeBytes(newCommand);
                         } catch (InterruptedException e) {
                             Log.e(tag, "Interrupted while trying to fetch pending command", e);
+                            isServerOnline.set(false);
                         } catch (IOException e) {
                             Log.e(tag, "Error happened while trying to write command", e);
+                            isServerOnline.set(false);
                         }
                     }
                 }
@@ -112,18 +123,24 @@ public class TCPControllerImpl implements Controller, Runnable {
                     commandDispatcher.executeCommand(command);
                 }
             }
+        } catch (java.net.ConnectException e) {
+            Log.e(tag, "Exception happened when trying to connect server", e);
+            isServerOnline.set(false);
         } catch (IOException e) {
             Log.e(tag, "Exception happened when trying to read from connection", e);
+            isServerOnline.set(false);
         } finally {
             try {
+                isServerOnline.set(false);
+
                 threadIsRunning.set(false);
 
-                if(outputStream != null)
+                if (outputStream != null)
                     outputStream.close();
-                if(inputReader != null)
+                if (inputReader != null)
                     inputReader.close();
 
-                if(clientSocket != null)
+                if (clientSocket != null)
                     clientSocket.close();
 
                 outputStream = null;

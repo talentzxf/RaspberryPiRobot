@@ -108,4 +108,8 @@ public class ReflectionHelper {
     public static void setContext(Context applicationContext) {
         ReflectionHelper.applicationContext = applicationContext;
     }
+
+    public static Context getContext() {
+        return applicationContext;
+    }
 }
