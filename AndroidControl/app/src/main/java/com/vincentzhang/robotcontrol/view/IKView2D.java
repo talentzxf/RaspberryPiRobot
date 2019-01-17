@@ -15,6 +15,7 @@ public class IKView2D extends android.support.v7.widget.AppCompatImageView {
     private Skeleton2D skeleton2D = new Skeleton2D(length1, length2);
     private int scrWidth = 0;
     private int scrHeight = 0;
+    private SkeletonChangeListener skeletonChangeListener;
 
     public IKView2D(Context context) {
         super(context);
@@ -26,6 +27,12 @@ public class IKView2D extends android.support.v7.widget.AppCompatImageView {
 
     public IKView2D(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void setOnSkeletonChangeListener(SkeletonChangeListener listener){
+        Log.i("IKView2D", "setOnSkeletonChangeListener");
+        skeletonChangeListener = listener;
+        this.skeleton2D.addObserver(listener);
     }
 
     @Override

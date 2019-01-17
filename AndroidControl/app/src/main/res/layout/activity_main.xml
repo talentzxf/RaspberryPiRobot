@@ -81,6 +81,7 @@
             app:layout_constraintTop_toBottomOf="@+id/rightWheelSpeed" />
 
         <com.vincentzhang.robotcontrol.view.IKView2D
+            android:id="@+id/ikView2d"
             android:layout_width="400dp"
             android:layout_height="200dp"
             android:layout_marginEnd="8dp"

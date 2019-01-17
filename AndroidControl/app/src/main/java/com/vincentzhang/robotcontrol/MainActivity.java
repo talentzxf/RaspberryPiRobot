@@ -12,9 +12,11 @@ import com.vincentzhang.robotcontrol.databinding.ActivityMainBinding;
 import com.vincentzhang.robotcontrol.model.ControllerModel;
 import com.vincentzhang.robotcontrol.model.SeekBarHandler;
 import com.vincentzhang.robotcontrol.utils.ReflectionHelper;
+import com.vincentzhang.robotcontrol.view.IKView2D;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ControllerModel model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ReflectionHelper.setContext(this.getApplicationContext());
@@ -28,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
         // setContentView(R.layout.activity_main);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setControllerModel(new ControllerModel(this.getApplicationContext().getResources()));
+        model = new ControllerModel(this.getApplicationContext().getResources());
+        binding.setControllerModel(model);
 
         setupCallbacks();
     }
@@ -41,5 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         leftSeekBar.setOnTouchListener(seekBarHandler);
         rightSeekBar.setOnTouchListener(seekBarHandler);
+
+        IKView2D ikView2D = findViewById(R.id.ikView2d);
+        ikView2D.setOnSkeletonChangeListener(model);
     }
 }

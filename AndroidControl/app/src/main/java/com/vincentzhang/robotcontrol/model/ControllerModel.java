@@ -9,14 +9,17 @@ import com.vincentzhang.robotcontrol.BR;
 import com.vincentzhang.robotcontrol.R;
 import com.vincentzhang.robotcontrol.controller.Controller;
 import com.vincentzhang.robotcontrol.controller.impl.TCPControllerImpl;
+import com.vincentzhang.robotcontrol.view.IKSolver2D;
+import com.vincentzhang.robotcontrol.view.SkeletonChangeListener;
 
 import java.io.IOException;
+import java.util.Observable;
 
 /**
  * Created by VincentZhang on 1/8/2019.
  */
 
-public class ControllerModel extends BaseObservable {
+public class ControllerModel extends BaseObservable implements SkeletonChangeListener {
     private String tag = "ControllerModel";
     private Controller controller = new TCPControllerImpl();
 
@@ -67,5 +70,14 @@ public class ControllerModel extends BaseObservable {
         this.rightSpeed = rightSpeed;
         notifyPropertyChanged(BR.rightSpeed);
         controller.setRightSpeed(this.rightSpeed);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(arg instanceof IKSolver2D){
+            IKSolver2D solver2D = (IKSolver2D) arg;
+
+            Log.i("ControllerModel", "Skeleton change! New Servo1 Degree:" + solver2D.getDegServoTheta1() + " theta2:" + solver2D.getDegServoTheta2());
+        }
     }
 }

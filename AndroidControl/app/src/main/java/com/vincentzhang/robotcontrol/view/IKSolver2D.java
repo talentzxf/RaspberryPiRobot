@@ -9,23 +9,31 @@ import java.util.List;
 public class IKSolver2D {
     private final double degAngleDiff = 50;
 
-    double degServoTheta1;  // The angle of main servo
-    double degServoTheta2;  // The angle of secondary servo
+    private double degServoTheta1;  // The angle of main servo
+    private double degServoTheta2;  // The angle of secondary servo
 
-    double getDegTheta1(){
+    public double getDegServoTheta1() {
+        return degServoTheta1;
+    }
+
+    public double getDegServoTheta2() {
+        return degServoTheta2;
+    }
+
+    public double getDegTheta1(){
         return 180 - degServoTheta1; // servo_theta_1 = 180 - theta_1
     }
 
-    double calculateServoTheta2(double theta_2){
+    public double calculateServoTheta2(double theta_2){
         return 180 - getDegTheta1() + theta_2 - degAngleDiff;
     }
 
     // Different from ServoTheta2!!!!
-    double getDegTheta2(){
+    public double getDegTheta2(){
         return degServoTheta2 - 180 + getDegTheta1() + degAngleDiff;
     }
 
-    boolean solveIK(Point2D target, double l1, double l2){
+    public boolean solveIK(Point2D target, double l1, double l2){
         Point2D c1 = new Point2D(0,0);
         List<Point2D> intersectPoints = MathHelper.circleInterect(c1,l1, target, l2);
         if(intersectPoints == null || intersectPoints.isEmpty()){

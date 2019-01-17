@@ -10,12 +10,13 @@ import com.vincentzhang.robotcontrol.utils.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by VincentZhang on 1/15/2019.
  */
 
-public class Skeleton2D {
+public class Skeleton2D extends Observable {
     private List<Bone> boneList = new ArrayList();
     private Point2D clampPosition = null;
     private int clampSize = 20;
@@ -50,6 +51,9 @@ public class Skeleton2D {
         Bone bone2 = boneList.get(1);
         bone2.dragBone(bone1.getEndPoint());
         bone2.setBoneDir(bone1.getBoneDir().rotateCW(180 - degTheta2));
+
+        setChanged();
+        notifyObservers(ikSolver2D);
     }
 
     public void draw(Canvas canvas) {
