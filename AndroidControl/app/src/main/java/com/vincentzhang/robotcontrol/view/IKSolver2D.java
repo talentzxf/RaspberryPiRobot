@@ -34,7 +34,8 @@ public class IKSolver2D {
         return 180 - getDegTheta1() + theta_2 - degAngleDiff;
     }
 
-    double getTheta2FromServoTheta2(){
+    // Different from ServoTheta2!!!!
+    double getDegTheta2(){
         return degServoTheta2 - 180 + getDegTheta1() + degAngleDiff;
     }
 

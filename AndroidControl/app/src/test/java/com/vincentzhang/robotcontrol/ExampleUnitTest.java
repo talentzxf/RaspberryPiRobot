@@ -18,16 +18,16 @@ import static org.junit.Assert.assertTrue;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
 
     @Test
     public void testVector2D(){
         Vector2D vec = new Vector2D(1,0);
-        vec.rotateCCW(90);
-        assertTrue();
+        assertTrue(vec.rotateCCW(90).equals(new Vector2D(0,1)));
+        assertTrue(vec.rotateCW(90).equals(new Vector2D(0,-1)));
+
+        for(int angle = 1; angle <= 180; angle++){
+            assertTrue(Math.abs(vec.rotateCCW(angle).degAngle(new Vector2D(1,0)) - angle) <= MathHelper.EPS);
+        }
     }
 
     @Test

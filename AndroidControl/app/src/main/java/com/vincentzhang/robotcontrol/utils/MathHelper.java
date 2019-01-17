@@ -92,11 +92,19 @@ public class MathHelper {
         return Math.abs(distance - r) < EPS;
     }
 
-    public static double getScreenX(double screenWidth, double worldX){
-        return worldX + screenWidth/6;
+    public static double getScreenX(double screenWidth, double worldX) {
+        return worldX + screenWidth / 6;
     }
 
-    public static double getScreenY(double screenHeight, double worldY){
-        return screenHeight*5/6 - worldY;
+    public static double getScreenY(double screenHeight, double worldY) {
+        return screenHeight * 5 / 6 - worldY;
+    }
+
+    public static double getWorldX(double screenWidth, double scrX) {
+        return scrX - screenWidth / 6;
+    }
+
+    public static double getWorldY(double screenHeight, double scrY) {
+        return screenHeight * 5 / 6 - scrY;
     }
 }

@@ -8,7 +8,7 @@ public class Bone {
     private Point2D endPoint;
 
     public Bone(Point2D startPoint, Vector2D direction, double length) {
-        this.startPoint = startPoint;
+        this.startPoint = new Point2D(startPoint);
         this.endPoint = new Vector2D(startPoint).add(direction.normalize().multiply(length));
     }
 

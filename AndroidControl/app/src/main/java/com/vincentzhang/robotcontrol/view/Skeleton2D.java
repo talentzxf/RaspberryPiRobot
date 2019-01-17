@@ -17,7 +17,20 @@ import java.util.List;
 
 public class Skeleton2D {
     private List<Bone> boneList = new ArrayList();
-    private Point2D lastPoint = null;
+    private Point2D clampPosition = null;
+    private int clampSize = 20;
+    private boolean isClampMoving = false;
+    private IKSolver2D ikSolver2D = new IKSolver2D();
+    private double bone1Length = 0;
+    private double bone2Length = 0;
+
+    public boolean isClampMoving() {
+        return isClampMoving;
+    }
+
+    public void setClampMoving(boolean clampMoving) {
+        isClampMoving = clampMoving;
+    }
 
     public Skeleton2D(double l1, double l2) {
         Bone bone1 = new Bone(new Point2D(0, 0), new Vector2D(1, 1), l1);
@@ -26,12 +39,15 @@ public class Skeleton2D {
         boneList.add(bone2);
 
         setTheta(50, 60);
+
+        bone1Length = l1;
+        bone2Length = l2;
     }
 
     public void setTheta(double degTheta1, double degTheta2) {
         Bone bone1 = boneList.get(0);
         bone1.setBoneDir(new Vector2D(1, 0).rotateCCW(degTheta1));
-        Bone bone2 = boneList.get(0);
+        Bone bone2 = boneList.get(1);
         bone2.dragBone(bone1.getEndPoint());
         bone2.setBoneDir(bone1.getBoneDir().rotateCW(180 - degTheta2));
     }
@@ -51,13 +67,23 @@ public class Skeleton2D {
             float scrPoint2X = (float) MathHelper.getScreenX(scrWidth, bone.getEndPoint().getX());
             float scrPoint2Y = (float) MathHelper.getScreenY(scrHeight, bone.getEndPoint().getY());
             canvas.drawLine(scrPoint1X, scrPoint1Y, scrPoint2X, scrPoint2Y, paint);
-            lastPoint = bone.getEndPoint();
+            clampPosition = bone.getEndPoint();
         }
 
-        if (lastPoint != null) {
-            float scrLastPointX = (float) MathHelper.getScreenX(scrWidth, lastPoint.getX());
-            float scrLastPointY = (float) MathHelper.getScreenY(scrHeight, lastPoint.getY());
-            canvas.drawCircle(scrLastPointX, scrLastPointY, 20, paint);
+        if (clampPosition != null) {
+            float scrLastPointX = (float) MathHelper.getScreenX(scrWidth, clampPosition.getX());
+            float scrLastPointY = (float) MathHelper.getScreenY(scrHeight, clampPosition.getY());
+            canvas.drawCircle(scrLastPointX, scrLastPointY, clampSize, paint);
+        }
+    }
+
+    public boolean insideObject(double x, double y) {
+        return new Point2D(x,y).distance(clampPosition) <= clampSize;
+    }
+
+    public void setClampPosition(double x, double y) {
+        if(ikSolver2D.solveIK(new Point2D(x,y), bone1Length, bone2Length)){
+            setTheta(ikSolver2D.getDegTheta1(), ikSolver2D.getDegTheta2());
         }
     }
 }
