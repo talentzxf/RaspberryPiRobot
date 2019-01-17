@@ -73,16 +73,21 @@ public class Skeleton2D {
         if (clampPosition != null) {
             float scrLastPointX = (float) MathHelper.getScreenX(scrWidth, clampPosition.getX());
             float scrLastPointY = (float) MathHelper.getScreenY(scrHeight, clampPosition.getY());
+            if (this.isClampMoving) {
+                paint.setColor(Color.BLUE);
+            } else {
+                paint.setColor(Color.BLACK);
+            }
             canvas.drawCircle(scrLastPointX, scrLastPointY, clampSize, paint);
         }
     }
 
     public boolean insideObject(double x, double y) {
-        return new Point2D(x,y).distance(clampPosition) <= clampSize;
+        return new Point2D(x, y).distance(clampPosition) <= clampSize;
     }
 
     public void setClampPosition(double x, double y) {
-        if(ikSolver2D.solveIK(new Point2D(x,y), bone1Length, bone2Length)){
+        if (ikSolver2D.solveIK(new Point2D(x, y), bone1Length, bone2Length)) {
             setTheta(ikSolver2D.getDegTheta1(), ikSolver2D.getDegTheta2());
         }
     }

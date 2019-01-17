@@ -2,13 +2,9 @@ package com.vincentzhang.robotcontrol.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.vincentzhang.robotcontrol.utils.MathHelper;
 
@@ -60,12 +56,12 @@ public class IKView2D extends android.support.v7.widget.AppCompatImageView {
                 if (this.skeleton2D.isClampMoving()) {
                     Log.i("IKView2D", "Clamp new position:" + x + "," + y + "!");
                     this.skeleton2D.setClampPosition(x, y);
-
-                    this.invalidate();
                 }
                 break;
         }
-        return super.onTouchEvent(event);
+
+        this.invalidate();
+        return true;
     }
 
     @Override
