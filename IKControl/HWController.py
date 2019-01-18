@@ -35,4 +35,4 @@ class HWController:
         self.supersonic.stop_thread()
 
     def set_servo_degree(self, id, degree):
-        self.servos[id].set_degree(degree)
+        self.servos[int(id)].set_degree(float(degree))
