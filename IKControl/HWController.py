@@ -15,7 +15,8 @@ class HWController:
         self.left_wheel = MotorController(PWMA, AIN1, AIN2)
         self.right_wheel = MotorController(PWMB, BIN1, BIN2)
         self.supersonic = SuperSonic()
-
+        
+        self.servos = {}
         self.servos[0] = ServoController(0)  # Clamp
         self.servos[1] = ServoController(1)  # Main arm
         self.servos[2] = ServoController(2)  # Second arm
