@@ -47,7 +47,7 @@ public class ControllerModel extends BaseObservable implements SkeletonChangeLis
     }
 
     public String getMsg() {
-        return msg;
+        return msg + "Controller Status:" + controller.getStatus();
     }
 
     @Bindable

@@ -1,5 +1,7 @@
 package com.vincentzhang.robotcontrol.controller;
 
+import com.vincentzhang.robotcontrol.controller.commands.ControllerStatusChangeListener;
+
 import java.io.IOException;
 
 /**
@@ -14,4 +16,5 @@ public interface Controller {
     boolean isControllerRunning();
 
     void setServoDegree(int idx, double degServoTheta);
+    void setStatusChangeListener(ControllerStatusChangeListener listener);
 }

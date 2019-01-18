@@ -1,6 +1,8 @@
 package com.vincentzhang.robotcontrol.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +22,7 @@ import dalvik.system.PathClassLoader;
 
 public class ReflectionHelper {
     private static Context applicationContext;
+    private static Activity mainActivity;
 
     public static List<Method> getAllMethodsWithAnnotation(String packageName, final Class<? extends Annotation> annotation) throws IOException, ClassNotFoundException {
         Class[] classes = getClasses(packageName);
@@ -111,5 +114,23 @@ public class ReflectionHelper {
 
     public static Context getContext() {
         return applicationContext;
+    }
+
+    public static void setActivity(Activity activity) {
+        mainActivity = activity;
+    }
+
+    public static Activity getActivity() {
+        return mainActivity;
+    }
+
+    public static void toastMessage(final String msg) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast = Toast.makeText(applicationContext, msg, Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
     }
 }
