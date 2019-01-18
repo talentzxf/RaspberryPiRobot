@@ -11,6 +11,7 @@ import com.vincentzhang.robotcontrol.utils.Vector2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by VincentZhang on 1/15/2019.
@@ -45,6 +46,11 @@ public class Skeleton2D extends Observable {
         bone2Length = l2;
     }
 
+    @Override
+    public synchronized void addObserver(Observer o) {
+        super.addObserver(o);
+    }
+
     public void setTheta(double degTheta1, double degTheta2) {
         Bone bone1 = boneList.get(0);
         bone1.setBoneDir(new Vector2D(1, 0).rotateCCW(degTheta1));
@@ -52,8 +58,10 @@ public class Skeleton2D extends Observable {
         bone2.dragBone(bone1.getEndPoint());
         bone2.setBoneDir(bone1.getBoneDir().rotateCW(180 - degTheta2));
 
-        setChanged();
-        notifyObservers(ikSolver2D);
+        if(ikSolver2D.getDegTheta1() != 0 && ikSolver2D.getDegTheta2() != 0){
+            setChanged();
+            notifyObservers(ikSolver2D);
+        }
     }
 
     public void draw(Canvas canvas) {
