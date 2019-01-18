@@ -21,6 +21,8 @@ class HWController:
         self.servos[1] = ServoController(1)  # Main arm
         self.servos[2] = ServoController(2)  # Second arm
         self.servos[3] = ServoController(3)  # Main platform
+        self.set_servo_degree(1, 90)
+        self.set_servo_degree(2,90)
 
     def set_left_speed(self, speed):
         self.left_wheel.set_speed(speed)
