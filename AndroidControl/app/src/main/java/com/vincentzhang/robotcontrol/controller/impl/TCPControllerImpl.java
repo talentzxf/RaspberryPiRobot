@@ -85,7 +85,9 @@ public class TCPControllerImpl implements Controller, Runnable {
     }
 
     public void setStatus(String status) {
-        //
+        if(this.statusChangeListener != null){
+            this.statusChangeListener.onStatusChanged(status);
+        }
     }
 
     public AtomicBoolean getIsServerOnline() {

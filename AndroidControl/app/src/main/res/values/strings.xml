@@ -3,4 +3,5 @@
     <string name="signature">VincentZhang\'s Robot Controller</string>
     <string name="rightwheelspeedformat">Right Speed:%d</string>
     <string name="leftwheelspeedformat">Left Speed:%d</string>
+    <string name="clampAngle">Clamp Angle</string>
 </resources>

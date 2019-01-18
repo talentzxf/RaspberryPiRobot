@@ -19,7 +19,7 @@ import java.util.Observable;
 public class Skeleton2D extends Observable {
     private List<Bone> boneList = new ArrayList();
     private Point2D clampPosition = null;
-    private int clampSize = 20;
+    private int clampSize = 40;
     private boolean isClampMoving = false;
     private IKSolver2D ikSolver2D = new IKSolver2D();
     private double bone1Length = 0;
