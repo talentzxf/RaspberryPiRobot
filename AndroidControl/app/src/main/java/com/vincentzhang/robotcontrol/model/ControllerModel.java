@@ -37,6 +37,7 @@ public class ControllerModel extends BaseObservable implements SkeletonChangeLis
     private int leftSpeed = INITSPEED;
     private int rightSpeed = INITSPEED;
     private int clampAngle = INITANGLE;
+    private int platformAngle = 90;
 
     private String controllerStatus = "unknown";
     private boolean isControllerRunning() {
@@ -79,6 +80,15 @@ public class ControllerModel extends BaseObservable implements SkeletonChangeLis
         this.rightSpeed = rightSpeed;
         notifyPropertyChanged(BR.rightSpeed);
         controller.setRightSpeed(this.rightSpeed);
+    }
+
+    @Bindable
+    public int getPlatformAngle(){return platformAngle;}
+
+    public void setPlatformAngle(int platformAngle){
+        this.platformAngle = platformAngle;
+        notifyPropertyChanged(BR.platformAngle);
+        controller.setServoDegree(3, platformAngle);
     }
 
     @Bindable
